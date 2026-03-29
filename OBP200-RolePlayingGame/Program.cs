@@ -341,6 +341,7 @@ class Program
             Player.Inventory.Add(foundItem);
             Console.WriteLine($"Du plockar upp: {foundItem}");
         }
+
         return true;
     }
 
@@ -384,6 +385,7 @@ class Program
                 Console.WriteLine("Köpmannen förstår inte ditt val.");
             }
         }
+
         return true;
     }
 
@@ -434,19 +436,4 @@ class Program
             Console.WriteLine($"Väska: {string.Join(";", Player.Inventory)}");
         }
     }
-
-    // ======= Hjälpmetoder =======
-
-    static int ParseInt(string text, int fallback)
-    {
-        try
-        {
-            int value = Convert.ToInt32(text);
-            return value;
-        }
-        catch (Exception exception)
-        {
-            return fallback;
-        }
-    }
-}
+}    
