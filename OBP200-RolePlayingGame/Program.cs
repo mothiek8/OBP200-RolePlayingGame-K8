@@ -77,16 +77,16 @@ class Program
         switch (PlayerChoice)
         {
             case "1":
-                Player = PlayerClass.CreateWarrior(name);
+                Player = PlayableClass.CreateWarrior(name);
                 break;
             case "2":
-                Player = PlayerClass.CreateMage(name);
+                Player = PlayableClass.CreateMage(name);
                 break;
             case "3":
-                Player = PlayerClass.CreateRogue(name);
+                Player = PlayableClass.CreateRogue(name);
                 break;
             default:
-                Player = PlayerClass.CreateWarrior(name);
+                Player = PlayableClass.CreateWarrior(name);
                 break;
         }
 

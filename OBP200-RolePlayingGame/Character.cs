@@ -1,13 +1,13 @@
 namespace OBP200_RolePlayingGame;
-// Inherited by class Player located in Player.cs and class Enemy located in 
+// Inherited by class Player located in Player.cs
 
 public abstract class Character
 {
-    public string Name { get; protected set; }
-    public int Health { get; protected set; }
-    public int MaxHealth { get; protected set; }
-    public int Attack { get; protected set; }
-    public int Defense { get; protected set; }
+    public string Name { get; set; }
+    public int Health { get; set; }
+    public int MaxHealth { get; set; }
+    public int Attack { get; set; }
+    public int Defense { get; set; }
 
     public bool IsDead => Health <= 0;
 

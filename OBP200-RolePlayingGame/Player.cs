@@ -1,13 +1,9 @@
 namespace OBP200_RolePlayingGame;
 
-public class Player
+// polymorphic class inherting from Character.cs
+public class Player : Character
 {
-    public string Name { get; set; }
     public string ClassType { get; set; }
-    public int Health { get; set; }
-    public int MaxHealth { get; set; }
-    public int Attack { get; set; }
-    public int Defense { get; set; }
     public int Gold { get; set; }
     public int Experience { get; set; }
     public int Level { get; set; }
@@ -26,13 +22,9 @@ public class Player
         int level,
         int potions,
         List<string> inventory)
+        : base(name, health, maxHealth, attack, defense)
     {
-        Name = name;
         ClassType = classType;
-        Health = health;
-        MaxHealth = maxHealth;
-        Attack = attack;
-        Defense = defense;
         Gold = gold;
         Experience = experience;
         Level = level;
