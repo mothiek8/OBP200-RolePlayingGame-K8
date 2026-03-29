@@ -10,15 +10,15 @@ class Program
     // Global variable that can store a player object
     static Player? Player;
 
-    // Rum: [type, label]
+    // Room: [type, label]
     // types: battle, treasure, shop, rest, boss
-    static List<string[]> Rooms = new List<string[]>();
+    static List<Room> Rooms = new List<Room>();
 
     // list for EnemyTemplates, coming from Character_Templates.cs. Index: [type, name, baseHealth, baseAttack, baseDefense, baseXpReward, baseGoldReward]
     static List<EnemyTemplate> EnemyTemplates = new List<EnemyTemplate>();
 
-    // Status för kartan
-    static int CurrentRoomIndex = 0;
+    // Map Status
+    static int _currentRoomIndex = 0;
 
     // Random
     static Random Rng = new Random();
@@ -90,17 +90,17 @@ class Program
                 break;
         }
 
-        // Initiera karta (linjärt äventyr)
+        // Initiate Map (The Adventure is linear from point a to b)
         Rooms.Clear();
-        Rooms.Add(new[] { "battle", "Skogsstig" });
-        Rooms.Add(new[] { "treasure", "Gammal kista" });
-        Rooms.Add(new[] { "shop", "Vandrande köpman" });
-        Rooms.Add(new[] { "battle", "Grottans mynning" });
-        Rooms.Add(new[] { "rest", "Lägereld" });
-        Rooms.Add(new[] { "battle", "Grottans djup" });
-        Rooms.Add(new[] { "boss", "Urdraken" });
+        Rooms.Add(new BattleRoom("Skogsstig"));
+        Rooms.Add(new TreasureRoom("Gammal kista"));
+        Rooms.Add(new ShopRoom("Vandrande köpman"));
+        Rooms.Add(new BattleRoom("Grottans mynning"));
+        Rooms.Add(new RestRoom("Lägereld"));
+        Rooms.Add(new BattleRoom("Grottans djup"));
+        Rooms.Add(new BossRoom("Urdraken"));
 
-        CurrentRoomIndex = 0;
+        _currentRoomIndex = 0;
 
         Console.WriteLine($"Välkommen, {Player.Name} the {Player.ClassType}!");
         ShowStatus();
@@ -110,10 +110,10 @@ class Program
     {
         while (true)
         {
-            var room = Rooms[CurrentRoomIndex];
-            Console.WriteLine($"--- Rum {CurrentRoomIndex + 1}/{Rooms.Count}: {room[1]} ({room[0]}) ---");
+            var room = Rooms[_currentRoomIndex];
+            Console.WriteLine($"--- Rum {_currentRoomIndex + 1}/{Rooms.Count}: {room.Label} ({room.TypeName}) ---");
 
-            bool continueAdventure = EnterRoom(room[0]);
+            bool continueAdventure = room.Enter();
 
             if (IsPlayerDead())
             {
@@ -127,9 +127,9 @@ class Program
                 break;
             }
 
-            CurrentRoomIndex++;
+            _currentRoomIndex++;
 
-            if (CurrentRoomIndex >= Rooms.Count)
+            if (_currentRoomIndex >= Rooms.Count)
             {
                 Console.WriteLine();
                 Console.WriteLine("Du har klarat äventyret!");
@@ -151,31 +151,9 @@ class Program
         }
     }
 
-    // ======= Rumshantering =======
+    // ======= Battle =======
 
-    static bool EnterRoom(string type)
-    {
-        switch ((type ?? "battle").Trim())
-        {
-            case "battle":
-                return DoBattle(isBoss: false);
-            case "boss":
-                return DoBattle(isBoss: true);
-            case "treasure":
-                return DoTreasure();
-            case "shop":
-                return DoShop();
-            case "rest":
-                return DoRest();
-            default:
-                Console.WriteLine("Du vandrar vidare...");
-                return true;
-        }
-    }
-
-    // ======= Strid =======
-
-    static bool DoBattle(bool isBoss)
+    public static bool DoBattle(bool isBoss)
     {
         var enemy = GenerateEnemy(isBoss);
         Console.WriteLine($"En {enemy.Name} dyker upp! (HP {enemy.Health}, ATK {enemy.Attack}, DEF {enemy.Defense})");
@@ -479,9 +457,9 @@ class Program
         }
     }
 
-    // ======= Rumshändelser =======
+    // ======= Room occurrences =======
 
-    static bool DoTreasure()
+    public static bool DoTreasure()
     {
         Console.WriteLine("Du hittar en gammal kista...");
         if (Rng.NextDouble() < 0.5)
@@ -500,7 +478,7 @@ class Program
         return true;
     }
 
-    static bool DoShop()
+    public static bool DoShop()
     {
         Console.WriteLine("En vandrande köpman erbjuder sina varor:");
         while (true)
@@ -572,7 +550,7 @@ class Program
         Console.WriteLine($"Du säljer {count} st Minor Gem för {count * 5} guld.");
     }
 
-    static bool DoRest()
+    public static bool DoRest()
     {
         Console.WriteLine("Du slår läger och vilar.");
         Player.Health = Player.MaxHealth;
