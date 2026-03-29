@@ -1,6 +1,6 @@
 namespace OBP200_RolePlayingGame;
 
-// polymorphic class inherting from Character.cs
+// polymorphic class inheriting from Character.cs
 public class Player : Character
 {
     public string ClassType { get; set; }

@@ -1,5 +1,5 @@
 namespace OBP200_RolePlayingGame;
-// Inherited by class Player located in Player.cs
+// Inherited by class Player located in Player.cs and class Enemy located in Enemy.cs
 
 public abstract class Character
 {
