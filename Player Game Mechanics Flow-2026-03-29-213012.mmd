@@ -1,0 +1,145 @@
+classDiagram
+    class Program {
+        +Main() void
+    }
+
+    class Game {
+        -player: Player
+        -rooms: List~Room~
+        -enemyTemplates: List~EnemyTemplate~
+        -currentRoomIndex: int
+        -random: Random
+        +Player: Player
+        +Random: Random
+        +Run() void
+        +DoBattle(isBoss: bool) bool
+        +DoTreasure() bool
+        +DoShop() bool
+        +DoRest() bool
+        -ShowMainMenu() void
+        -StartNewGame() void
+        -RunGameLoop() void
+        -GenerateEnemy(isBoss: bool) Enemy
+        -InitEnemyTemplates() void
+        -IsPlayerDead() bool
+        -AddPlayerXp(amount: int) void
+        -AddPlayerGold(amount: int) void
+        -MaybeLevelUp() void
+        -MaybeDropLoot(enemyName: string) void
+        -TryBuy(cost: int, applyPurchase: Action, successMessage: string) void
+        -SellMinorGems() void
+        -ShowStatus() void
+    }
+
+    class Character {
+        <<Abstract>>
+        +Name: string
+        +Health: int
+        +MaxHealth: int
+        +Attack: int
+        +Defense: int
+        +IsDead: bool
+        +TakeDamage(amount: int) void
+        +Heal(amount: int) int
+        +RestoreToFull() void
+    }
+
+    class Player {
+        +ClassType: string
+        +Gold: int
+        +Experience: int
+        +Level: int
+        +Potions: int
+        +Inventory: List~string~
+    }
+
+    class Enemy {
+        +Type: string
+        +XpReward: int
+        +GoldReward: int
+    }
+
+    class EnemyTemplate {
+        +Type: string
+        +Name: string
+        +BaseHealth: int
+        +BaseAttack: int
+        +BaseDefense: int
+        +BaseXpReward: int
+        +BaseGoldReward: int
+        +CreateEnemy(random: Random) Enemy
+    }
+
+    class CombatSystem {
+        <<Static>>
+        +CalculatePlayerDamage(player: Player, enemy: Enemy, random: Random) int
+        +UseClassSpecial(player: Player, enemy: Enemy, versusBoss: bool, random: Random) int
+        +CalculateEnemyDamage(player: Player, enemy: Enemy, random: Random) int
+        +ApplyDamageToPlayer(player: Player, damage: int) void
+        +UsePotion(player: Player) void
+        +TryRunAway(player: Player, random: Random) bool
+    }
+
+    class PlayableClass {
+        <<Static>>
+        +CreateWarrior(name: string) Player
+        +CreateMage(name: string) Player
+        +CreateRogue(name: string) Player
+    }
+
+    class Room {
+        <<Abstract>>
+        +Label: string
+        +TypeName: string
+        +Enter(game: Game) bool
+    }
+
+    class BattleRoom {
+        +TypeName: string
+        +Enter(game: Game) bool
+    }
+
+    class BossRoom {
+        +TypeName: string
+        +Enter(game: Game) bool
+    }
+
+    class TreasureRoom {
+        +TypeName: string
+        +Enter(game: Game) bool
+    }
+
+    class ShopRoom {
+        +TypeName: string
+        +Enter(game: Game) bool
+    }
+
+    class RestRoom {
+        +TypeName: string
+        +Enter(game: Game) bool
+    }
+
+    Character <|-- Player : Inheritance
+    Character <|-- Enemy : Inheritance
+
+    Room <|-- BattleRoom : Inheritance
+    Room <|-- BossRoom : Inheritance
+    Room <|-- TreasureRoom : Inheritance
+    Room <|-- ShopRoom : Inheritance
+    Room <|-- RestRoom : Inheritance
+
+    Program ..> Game : Creates
+    Game --> Player : Has
+    Game --> Room : Contains
+    Game --> EnemyTemplate : Contains
+    Game ..> Enemy : Creates
+    EnemyTemplate ..> Enemy : Creates
+
+    Game ..> CombatSystem : Uses
+    PlayableClass ..> Player : Creates
+
+    BattleRoom ..> Game : Calls
+    BossRoom ..> Game : Calls
+    TreasureRoom ..> Game : Calls
+    ShopRoom ..> Game : Calls
+    RestRoom ..> Game : Calls
