@@ -1,5 +1,6 @@
 namespace OBP200_RolePlayingGame;
-// Polymorhic Class Room, several ineritors
+
+// Polymorphic class Room, several inheritors
 public abstract class Room
 {
     public string Label { get; }
@@ -10,7 +11,7 @@ public abstract class Room
         Label = label;
     }
 
-    public abstract bool Enter();
+    public abstract bool Enter(Game game);
 }
 
 public class BattleRoom : Room
@@ -18,9 +19,9 @@ public class BattleRoom : Room
     public BattleRoom(string label) : base(label) { }
     public override string TypeName => "battle";
 
-    public override bool Enter()
+    public override bool Enter(Game game)
     {
-        return Program.DoBattle(false);
+        return game.DoBattle(false);
     }
 }
 
@@ -29,9 +30,9 @@ public class BossRoom : Room
     public BossRoom(string label) : base(label) { }
     public override string TypeName => "boss";
 
-    public override bool Enter()
+    public override bool Enter(Game game)
     {
-        return Program.DoBattle(true);
+        return game.DoBattle(true);
     }
 }
 
@@ -40,9 +41,9 @@ public class TreasureRoom : Room
     public TreasureRoom(string label) : base(label) { }
     public override string TypeName => "treasure";
 
-    public override bool Enter()
+    public override bool Enter(Game game)
     {
-        return Program.DoTreasure();
+        return game.DoTreasure();
     }
 }
 
@@ -51,9 +52,9 @@ public class ShopRoom : Room
     public ShopRoom(string label) : base(label) { }
     public override string TypeName => "shop";
 
-    public override bool Enter()
+    public override bool Enter(Game game)
     {
-        return Program.DoShop();
+        return game.DoShop();
     }
 }
 
@@ -62,8 +63,8 @@ public class RestRoom : Room
     public RestRoom(string label) : base(label) { }
     public override string TypeName => "rest";
 
-    public override bool Enter()
+    public override bool Enter(Game game)
     {
-        return Program.DoRest();
+        return game.DoRest();
     }
 }
