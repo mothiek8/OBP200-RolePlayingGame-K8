@@ -7,7 +7,7 @@ class Program
     // ======= Global Status  =======
 
     // Global variable that can store a player object
-    static Player? Player;
+    static Player Player;
 
     // Room: [type, label]
     // types: battle, treasure, shop, rest, boss
